@@ -12,7 +12,7 @@ pip install -e ".[dev]"
 
 Duplicate the `.env.example` file and rename it to `.env`.
 
-Then, start the Dagster UI web server:
+Then, start the Dagster UI web server:g
 
 ```bash
 dagster dev
