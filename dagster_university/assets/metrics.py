@@ -65,7 +65,7 @@ def manhattan_map():
 
 
 @asset(deps=["taxi_trips"], partitions_def=weekly_partition)
-def trips_by_week(context, database: DuckDBResource):
+def trips_by_week(context, db: DuckDBResource):
     """
     The number of trips per week, aggregated by week.
     """
@@ -80,7 +80,7 @@ def trips_by_week(context, database: DuckDBResource):
             and pickup_datetime < '{period_to_fetch}'::date + interval '1 week'
     """
 
-    with database.get_connection() as conn:
+    with db.get_connection() as conn:
         data_for_month = conn.execute(query).fetch_df()
 
     aggregate = (
