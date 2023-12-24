@@ -2,14 +2,16 @@ import requests
 from dagster_duckdb import DuckDBResource
 from . import constants
 from dagster import asset
+from ..partitions import monthly_partition
 
 
-@asset
-def taxi_trips_file():
+@asset(partitions_def=monthly_partition)
+def taxi_trips_file(context):
     """
     The raw parquet files for the taxi trips dataset. Sourced from the NYC Open Data portal.
     """
-    month_to_fetch = "2023-03"
+    partition_date_str = context.asset_partition_key_for_output()
+    month_to_fetch = partition_date_str[:-3]
     raw_trips = requests.get(
         f"https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_{month_to_fetch}.parquet"
     )
