@@ -15,7 +15,7 @@ class AdhocRequestConfig(Config):
 
 
 @asset(deps=["taxi_zones", "taxi_trips"])
-def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource):
+def adhoc_request(config: AdhocRequestConfig, db: DuckDBResource):
     """
     The response to an request made in the `requests` directory.
     See `requests/README.md` for more information.
@@ -54,7 +54,7 @@ def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource):
         order by 1, 2 asc
     """
 
-    with database.get_connection() as conn:
+    with db.get_connection() as conn:
         results = conn.execute(query).fetch_df()
 
     fig = px.bar(
